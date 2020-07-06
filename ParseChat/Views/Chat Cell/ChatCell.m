@@ -10,8 +10,6 @@
 
 @interface ChatCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
-
 @end
 
 @implementation ChatCell
@@ -19,10 +17,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-}
-
-- (void)setMessage:(NSString *)message {
-    self.messageLabel.text = message;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

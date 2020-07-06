@@ -12,6 +12,7 @@
 
 static NSString *const kMessageClassName = @"Message_fbu2020";
 static NSString *const kTextKey = @"text";
+static NSString *const kUserKey = @"user";
 static NSString *const kChatCellIdentifier = @"ChatCell";
 
 @interface ChatViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -36,6 +37,7 @@ static NSString *const kChatCellIdentifier = @"ChatCell";
 - (void)refresh {
     PFQuery *query = [PFQuery queryWithClassName:kMessageClassName];
     [query orderByDescending:@"createdAt"];
+    [query includeKey:@"user"];
     query.limit = 20;
 
     // fetch data asynchronously
@@ -53,6 +55,7 @@ static NSString *const kChatCellIdentifier = @"ChatCell";
     PFObject *chatMessage = [PFObject objectWithClassName:kMessageClassName];
     
     chatMessage[kTextKey] = self.messageField.text;
+    chatMessage[kUserKey] = PFUser.currentUser;
     
     [chatMessage saveInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (succeeded) {
@@ -71,8 +74,17 @@ static NSString *const kChatCellIdentifier = @"ChatCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:kChatCellIdentifier];
+    
     PFObject *const message = self.messageArray[indexPath.row];
-    [cell setMessage:message[kTextKey]];
+    cell.messageLabel.text = message[kTextKey];
+    
+    PFUser *const user = message[kUserKey];
+    if (user != nil) {
+        cell.usernameLabel.text = user.username;
+    } else {
+        cell.usernameLabel.text = @"🤖";
+    }
+    
     return cell;
 }
 
