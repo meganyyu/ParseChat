@@ -28,8 +28,8 @@ static NSString *const kChatNavigationControllerID = @"ChatNavigationController"
     if (user != nil) {
         NSLog(@"Welcome back %@ 😀", user.username);
 
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController *chatNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"ChatNavigationController"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
+        UIViewController *chatNavigationController = [storyboard instantiateViewControllerWithIdentifier:kChatNavigationControllerID];
         self.window.rootViewController = chatNavigationController;
     }
 }
