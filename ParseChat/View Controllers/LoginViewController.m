@@ -7,7 +7,7 @@
 //
 
 #import "LoginViewController.h"
-#import <Parse/Parse.h>;
+#import <Parse/Parse.h>
 
 @interface LoginViewController ()
 
@@ -35,7 +35,7 @@
 }
 
 - (void)registerUser {
-    PFUser *newUser = [PFUser user];
+    PFUser *const newUser = [PFUser user];
     
     newUser.username = self.usernameField.text;
     newUser.password = self.passwordField.text;
@@ -50,7 +50,7 @@
             } else {
                 NSLog(@"User registered successfully");
             
-                // TODO: manually segue to logged in view
+                [self performSegueWithIdentifier:@"loginSegue" sender:nil];
             }
         }];
     }
@@ -68,7 +68,7 @@
         } else {
             NSLog(@"User logged in successfully");
             
-            // display view controller that needs to shown after successful login
+            [self performSegueWithIdentifier:@"loginSegue" sender:nil];
         }
     }];
 }
