@@ -9,6 +9,10 @@
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
 
+static NSString *const kLoginSegue = @"loginSegue";
+
+#pragma mark - Interface
+
 @interface LoginViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
@@ -18,13 +22,17 @@
 
 @end
 
+#pragma mark - Implementation
+
 @implementation LoginViewController
+
+#pragma mark - Setup
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
 }
+
+#pragma mark - User interaction
 
 - (IBAction)didTapSignUp:(id)sender {
     [self registerUser];
@@ -33,6 +41,8 @@
 - (IBAction)didTapLogin:(id)sender {
     [self loginUser];
 }
+
+#pragma mark - Authentication
 
 - (void)registerUser {
     PFUser *const newUser = [PFUser user];
@@ -49,8 +59,8 @@
                 NSLog(@"User registration failed: %@", error.localizedDescription);
             } else {
                 NSLog(@"User registered successfully");
-            
-                [self performSegueWithIdentifier:@"loginSegue" sender:nil];
+                
+                [self performSegueWithIdentifier:kLoginSegue sender:nil];
             }
         }];
     }
@@ -63,21 +73,20 @@
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
             [self showAlert:@"User login failed" withMessage:error.localizedDescription completion:nil];
-            NSLog(@"Error: %@", error.localizedDescription);
             NSLog(@"User login failed: %@", error.localizedDescription);
         } else {
             NSLog(@"User logged in successfully");
             
-            [self performSegueWithIdentifier:@"loginSegue" sender:nil];
+            [self performSegueWithIdentifier:kLoginSegue sender:nil];
         }
     }];
 }
 
 - (void)showAlert:(NSString *)title withMessage:(NSString *)message completion:(void(^)(void))completion{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-           message:message
-    preferredStyle:(UIAlertControllerStyleAlert)];
-
+                                                                   message:message
+                                                            preferredStyle:(UIAlertControllerStyleAlert)];
+    
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
                                                        style:UIAlertActionStyleDefault
                                                      handler:nil];
@@ -85,15 +94,5 @@
     
     [self presentViewController:alert animated:YES completion:nil];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

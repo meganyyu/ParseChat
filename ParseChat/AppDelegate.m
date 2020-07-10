@@ -21,8 +21,8 @@ static NSString *const kServerURLString = @"https://blooming-thicket-89345.herok
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     ParseClientConfiguration *configuration = [ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
-      configuration.applicationId = kParseAppID;
-      configuration.server = kServerURLString;
+        configuration.applicationId = kParseAppID;
+        configuration.server = kServerURLString;
     }];
     [Parse initializeWithConfiguration:configuration];
     
